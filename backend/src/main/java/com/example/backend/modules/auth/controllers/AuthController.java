@@ -1,10 +1,10 @@
 package com.example.backend.modules.auth.controllers;
 
 import com.example.backend.modules.auth.services.AuthService;
-import com.example.backend.shared.ApiResponse;
-import com.example.backend.shared.dtos.AuthRequest;
-import com.example.backend.shared.dtos.AuthResponse;
-import com.example.backend.shared.dtos.RegisterRequest;
+import com.example.backend.shared.exceptions.ApiResponse;
+import com.example.backend.modules.auth.models.dtos.AuthRequest;
+import com.example.backend.modules.auth.models.dtos.AuthResponse;
+import com.example.backend.modules.auth.models.dtos.RegisterRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

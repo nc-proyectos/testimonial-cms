@@ -1,12 +1,12 @@
 package com.example.backend.modules.auth.services;
 
 import com.example.backend.config.JwtUtils;
-import com.example.backend.modules.auth.entities.Role;
-import com.example.backend.modules.auth.entities.User;
+import com.example.backend.modules.auth.models.entities.Role;
+import com.example.backend.modules.auth.models.entities.User;
 import com.example.backend.modules.auth.repositories.UserRepository;
-import com.example.backend.shared.dtos.AuthRequest;
-import com.example.backend.shared.dtos.AuthResponse;
-import com.example.backend.shared.dtos.RegisterRequest;
+import com.example.backend.modules.auth.models.dtos.AuthRequest;
+import com.example.backend.modules.auth.models.dtos.AuthResponse;
+import com.example.backend.modules.auth.models.dtos.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,14 +25,14 @@ public class AuthService implements UserDetailsService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.email())) {
             throw new IllegalStateException("El email ya está registrado");
         }
 
         User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.name())
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
                 .role(Role.EDITOR) // por defecto EDITOR; ADMIN se asigna manualmente
                 .build();
 
@@ -43,9 +43,9 @@ public class AuthService implements UserDetailsService {
 
     public AuthResponse login(AuthRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
         String token = jwtUtils.generateToken(user);
