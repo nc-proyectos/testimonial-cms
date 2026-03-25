@@ -1,5 +1,6 @@
 package com.example.backend.config;
 
+import com.example.backend.config.Jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ public class SecurityConfig {
                         // API pública (sin token)
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         // Todo lo demás requiere auth
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

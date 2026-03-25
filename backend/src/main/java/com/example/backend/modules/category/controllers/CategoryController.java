@@ -1,11 +1,43 @@
 package com.example.backend.modules.category.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.backend.modules.category.models.dtos.CategoryRequest;
+import com.example.backend.modules.category.models.dtos.CategoryResponse;
+import com.example.backend.modules.category.models.dtos.TagResponse;
+import com.example.backend.modules.category.services.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/categories")
+@RequiredArgsConstructor
+@Tag(name = "Categories", description = "Gestion de Categories")
 public class CategoryController {
-    //todo: GET/POST/DELETE  /api/categories
+    //todo: end point con filtro de busqueda
+
+    private final CategoryService categoryService;
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Obtener category por id")
+    public CategoryResponse getById(@PathVariable Long id){
+        return categoryService.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Crear una category nueva")
+    public CategoryResponse create(@RequestBody CategoryRequest categoryRequest){
+        return categoryService.create(categoryRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Borrar category por id")
+    public void delete(@PathVariable Long id){
+        categoryService.delete(id);
+    }
 
 }

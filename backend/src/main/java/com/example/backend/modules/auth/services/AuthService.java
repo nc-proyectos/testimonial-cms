@@ -1,6 +1,6 @@
 package com.example.backend.modules.auth.services;
 
-import com.example.backend.config.JwtUtils;
+import com.example.backend.config.Jwt.JwtUtils;
 import com.example.backend.modules.auth.models.entities.Role;
 import com.example.backend.modules.auth.models.entities.User;
 import com.example.backend.modules.auth.repositories.UserRepository;

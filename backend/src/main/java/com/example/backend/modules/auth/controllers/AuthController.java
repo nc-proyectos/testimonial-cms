@@ -22,14 +22,14 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Registrar nuevo usuario")
-    public ApiResponse<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
-        return ApiResponse.ok(authService.register(request));
+    public AuthResponse register(@Valid @RequestBody RegisterRequest request) {
+        return authService.register(request);
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Iniciar sesión")
-    public ApiResponse<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
-        return ApiResponse.ok(authService.login(request));
+    public AuthResponse login(@Valid @RequestBody AuthRequest request) {
+        return authService.login(request);
     }
 }

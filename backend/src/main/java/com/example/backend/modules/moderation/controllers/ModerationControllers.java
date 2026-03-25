@@ -1,19 +1,34 @@
 package com.example.backend.modules.moderation.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.backend.modules.moderation.services.ModerationService;
+import com.example.backend.modules.testimonial.models.dtos.TestimonialResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/testimonials")
+@RequiredArgsConstructor
+@Tag(name = "Moderation", description = "Moderacion de testimonios")
 public class ModerationControllers {
     //Lo separo de testimonial para que la lógica de negocio
     // de moderación no ensucie el CRUD básico.
 
-//todo:
-//    PATCH  /api/testimonials/{id}/approve   # ADMIN/EDITOR
-//    PATCH  /api/testimonials/{id}/reject    # ADMIN/EDITOR
-//    GET    /api/testimonials/pending        # listar pendientes
+    private final ModerationService moderationService;
 
+    @PostMapping("/approve/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Aprobar la publicacion de un testimonio")
+    public TestimonialResponse approve(@PathVariable Long id){
+        return moderationService.approve(id);
+    }
 
-
+    @PostMapping("/reject/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Rechazar la publicacion de un testimonio")
+    public TestimonialResponse reject(@PathVariable Long id,String rejectionReason){
+        return moderationService.reject(id, rejectionReason);
+    }
 }

@@ -7,8 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
-public record TestimonialRequest(
-
+public record TestimonialUpdateRequest(
         String content,
 
         @NotBlank(message = "El nombre del autor es obligatorio")
@@ -22,6 +21,6 @@ public record TestimonialRequest(
 
         Long categoryId,
 
-        Set<Long>tagIds
+        Set<Long> tagIds
 ) {
 }

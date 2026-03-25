@@ -57,7 +57,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
     public MediaUploadResponse uploadCloudinary(MultipartFile file, Long testimonialId) {
         Testimonial testimonial = this.testimonialRepository.findById(testimonialId)
                 .orElseThrow(() -> new ResourceNotFoundException(("Testimonial no encontrado")));
@@ -76,7 +76,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
     @Transactional
     public List<MediaUploadResponse> uploadMultipleCloudinary(List<MultipartFile> files, Long testimonialId) {
 
@@ -110,7 +110,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
     public MediaUploadResponse addYoutube(YoutubeRequest request, Long testimonialId) {
         Testimonial testimonial = this.testimonialRepository.findById(testimonialId)
                 .orElseThrow(() -> new ResourceNotFoundException("Testimonial no encontrado"));
@@ -129,7 +129,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'EDITOR')")
     @Transactional
     public List<MediaUploadResponse> addMultipleYoutube(YoutubeBatchRequest request, Long testimonialId) {
 
@@ -154,7 +154,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public void deleteMedia(Long mediaId) {
         MediaAsset media = this.mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new ResourceNotFoundException(("Media no encontrada")));
