@@ -1,14 +1,12 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import CategoryIcon from '@mui/icons-material/Category';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import logo from "../../assets/logo.png"
-
+import {NavLink} from 'react-router';
 
 
 export function Dashboard () {
@@ -26,8 +24,8 @@ const DrawerList = (
     <List>
         <nav>
             <ul style={{marginLeft:'11%' , color:'white'}}>
-                <li style={{marginTop:'12%'}}><DashboardIcon/><a style={{marginLeft:'3%' , fontWeight:'bold'}} href="">Dashboard</a></li>
-                <li style={{marginTop:'12%'}}><TextsmsIcon/><a style={{marginLeft:'3%', fontWeight:'bold'}} href="">Testimonios</a></li>
+                <li style={{marginTop:'12%'}}><DashboardIcon/><NavLink style={{marginLeft:'3%' , fontWeight:'bold'}} to="/dashboard">Dashboard</NavLink></li>
+                <li style={{marginTop:'12%'}}><TextsmsIcon/><NavLink style={{marginLeft:'3%', fontWeight:'bold'}} to="testimonios">Testimonios</NavLink></li>
                 <li style={{marginTop:'12%'}}><DownloadDoneIcon/><a style={{marginLeft:'3%' , fontWeight:'bold'}} href="">Moderación</a></li>
                 <li style={{marginTop:'12%'}}><CategoryIcon/><a style={{marginLeft:'3%', fontWeight:'bold'}} href="">Categorias</a></li>
                 <li style={{marginTop:'12%'}}><ArrowBackIosNewIcon/><a style={{marginLeft:'3%', fontWeight:'bold'}} href="">Embeds</a></li>

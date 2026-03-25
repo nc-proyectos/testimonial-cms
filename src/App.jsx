@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import Dashboard from "./components/dashboard/Dashboard"
 import Header from './components/home/Header'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 import { Route, Routes } from "react-router";
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import FirstPage from './components/dashboard/FirstPage';
+import Testimonios from './components/dashboard/Testimonios';
 
 function App() {
 
@@ -13,7 +12,10 @@ function App() {
     <>
       <Routes>
         <Route path="/home" element={<Header/>} />
-        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path='/dashboard' element={<DashboardLayout/>}>
+          <Route index element={<FirstPage/>}/>
+          <Route path='testimonios' element={<Testimonios/>}></Route>
+        </Route>
       </Routes>
     </>
   )
