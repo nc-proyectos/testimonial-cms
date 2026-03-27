@@ -1,73 +1,68 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 
 const AuthPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  
-  // ESTADO: Aquí guardamos lo que el usuario escribe (como un objeto JSON)
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const navigate = useNavigate(); 
 
-  // Esta función actualiza el estado cada vez que alguien escribe una letra
   const handleChange = (e) => {
-    setFormData({
-      ...formData,           // Copiamos lo que ya había
-      [e.target.name]: e.target.value  // Actualizamos solo el campo que cambió
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí es donde harías el fetch a tu API del backend
-    console.log("Datos listos para enviar al servidor:", formData);
-    
-    if(!isLogin && formData.password !== formData.confirmPassword) {
-      alert("¡Las contraseñas no coinciden, che!");
-      return;
-    }
-    
-    alert("Formulario enviado. Mira la consola (F12) para ver el JSON.");
+    console.log("Login intentado con:", formData);
+    navigate('/dashboard'); 
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', gap: '10px' }}>
-        <h2>{isLogin ? 'Login' : 'Registro'}</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-100 to-white font-sans px-4">
+      <div className="max-w-md w-full bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
         
-        <input 
-          name="email" 
-          type="email" 
-          placeholder="Email" 
-          onChange={handleChange} // Vinculamos el cambio
-          required 
-        />
+        {/* LOGO SECCIÓN: Margen inferior reducido (mb-4) para subirlo */}
+        <div className="flex flex-col items-center mb-4">
+          <img 
+            src="/src/assets/logo.png" // Mantenemos tu ruta funcional
+            alt="TestimonialHub Logo" 
+            className="w-64 h-auto object-contain" 
+          />
+        </div>
         
-        <input 
-          name="password" 
-          type="password" 
-          placeholder="Contraseña" 
-          onChange={handleChange} 
-          required 
-        />
-
-        {!isLogin && (
+        <form onSubmit={handleSubmit} className="space-y-5">
           <input 
-            name="confirmPassword" 
-            type="password" 
-            placeholder="Repetir contraseña" 
+            name="email" 
+            type="email" 
+            placeholder="Correo electrónico (ejemplo@gmail.com)" 
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A90E2] outline-none transition-all"
             onChange={handleChange} 
             required 
           />
-        )}
+          <input 
+            name="password" 
+            type="password" 
+            placeholder="Contraseña" 
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#8A5DE8] outline-none transition-all"
+            onChange={handleChange} 
+            required 
+          />
+          
+          <button type="submit" 
+            className="w-full py-3 bg-[#8A5DE8] hover:bg-[#7a4ddb] text-white font-bold rounded-lg shadow-lg transform transition-all active:scale-95">
+            Ingresar
+          </button>
+        </form>
 
-        <button type="submit">{isLogin ? 'Entrar' : 'Registrarme'}</button>
-        
-        <button type="button" onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', border: 'none', color: 'blue', cursor: 'pointer' }}>
-          {isLogin ? '¿No tienes cuenta? Crea una' : 'Ya tengo cuenta'}
-        </button>
-      </form>
+        {/* Margen superior reducido (mt-6) */}
+        <p className="text-center mt-6 text-sm text-gray-600">
+          ¿No tienes cuenta? 
+          <button 
+            onClick={() => navigate('/register')} 
+            className="text-[#4A90E2] font-semibold hover:underline ml-1"
+          >
+            Regístrate aquí
+          </button>
+        </p>
+      </div>
     </div>
   );
 };
