@@ -7,6 +7,7 @@ import com.example.backend.modules.category.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,16 @@ public class CategoryController {
     @Operation(summary = "Obtener category por id")
     public CategoryResponse getById(@PathVariable Long id){
         return categoryService.findById(id);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Obtener todas las categories")
+    public Page<CategoryResponse> findAll(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "10")int size
+    ){
+        return categoryService.findAll(page, size);
     }
 
     @PostMapping

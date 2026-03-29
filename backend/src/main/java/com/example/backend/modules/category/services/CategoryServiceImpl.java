@@ -5,6 +5,9 @@ import com.example.backend.modules.category.models.dtos.CategoryResponse;
 import com.example.backend.modules.category.models.entities.Category;
 import com.example.backend.modules.category.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +47,13 @@ public class CategoryServiceImpl implements CategoryService {
     public Category applyCategory(Long id){
         return categoryRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("no se encontro id "+id));
+    }
+
+    @Override
+    public Page<CategoryResponse> findAll(int page, int size){
+        Pageable pageable= PageRequest.of(page,size);
+        return categoryRepository.findAll(pageable)
+                .map(this::toResponse);
     }
 
     public CategoryResponse toResponse(Category c) {

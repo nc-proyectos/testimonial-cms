@@ -6,6 +6,8 @@ import com.example.backend.modules.category.services.TagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Tags", description = "Gestion de Tags")
 public class TagController {
-    //todo: falta end point con filtro de busqueda
 
     private final TagService tagService;
 
@@ -30,6 +31,16 @@ public class TagController {
     @Operation(summary = "Crear un tag nuevo")
     TagResponse create(@RequestBody TagRequest tagRequest){
         return tagService.create(tagRequest);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Obtener todos los tags")
+    public Page<TagResponse> findAll(
+            @RequestParam(defaultValue = "0")int page,
+            @RequestParam(defaultValue = "10")int size
+    ){
+        return tagService.findAll(page, size);
     }
 
     @DeleteMapping("/{id}")

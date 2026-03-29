@@ -6,6 +6,9 @@ import com.example.backend.modules.category.models.entities.Tag;
 import com.example.backend.modules.category.repositories.TagRepository;
 import com.example.backend.shared.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -41,6 +44,13 @@ public class TagServiceImpl implements TagService {
     @Override
     public void delete(Long id){
         tagRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<TagResponse>findAll(int page, int size ){
+        Pageable pageable=PageRequest.of(page,size);
+        return tagRepository.findAll(pageable)
+                .map(this::toResponse);
     }
 
     public Set<Tag> applyTags(Set<Long> tags){

@@ -3,17 +3,21 @@ package com.example.backend.modules.testimonial.services;
 import com.example.backend.modules.category.models.entities.Tag;
 import com.example.backend.modules.category.services.CategoryServiceImpl;
 import com.example.backend.modules.category.services.TagServiceImpl;
-import com.example.backend.modules.testimonial.models.dtos.PublicTestimonialRequest;
-import com.example.backend.modules.testimonial.models.dtos.TestimonialRequest;
-import com.example.backend.modules.testimonial.models.dtos.TestimonialResponse;
-import com.example.backend.modules.testimonial.models.dtos.TestimonialUpdateRequest;
+import com.example.backend.modules.testimonial.models.dtos.*;
 import com.example.backend.modules.testimonial.models.entities.Testimonial;
+import com.example.backend.modules.testimonial.models.entities.TestimonialStatus;
 import com.example.backend.modules.testimonial.repositories.TestimonialRepository;
 import com.example.backend.shared.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +81,27 @@ public class TestimonialServiceImpl implements TestimonialService {
         testimonialRepository.deleteById(id);
     }
 
+    @Override
+    public Page<TestimonialResponse> findByFilters(Integer rating, Long categoryId, Long tagId, TestimonialStatus status, int page, int size) {
+
+        TestimonialFilter filter = new TestimonialFilter(
+                rating,
+                categoryId,
+                tagId,
+                status);
+
+        Specification<Testimonial> spec = Specification
+                .where(TestimonialSpecification.hasRating(filter.rating()))
+                .and(TestimonialSpecification.hasStatus(filter.status()))
+                .and(TestimonialSpecification.hasCategory(filter.categoryId()))
+                .and(TestimonialSpecification.hasTag(filter.tagId()));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+         return testimonialRepository.findAll(spec,pageable)
+                 .map(this::toResponse);
+    }
+
     public TestimonialResponse toResponse(Testimonial t) {
         return new TestimonialResponse(
                 t.getId(),
@@ -100,4 +125,5 @@ public class TestimonialServiceImpl implements TestimonialService {
                 t.getPublishedAt()
         );
     }
+
 }
