@@ -6,9 +6,11 @@ import com.example.backend.modules.category.models.dtos.TagResponse;
 import com.example.backend.modules.category.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Categories", description = "Gestion de Categories")
 public class CategoryController {
-    //todo: end point con filtro de busqueda
 
     private final CategoryService categoryService;
 
@@ -40,13 +41,15 @@ public class CategoryController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Crear una category nueva")
-    public CategoryResponse create(@RequestBody CategoryRequest categoryRequest){
+    @PreAuthorize("hasRole('ADMIN')")
+    public CategoryResponse create(@Valid @RequestBody CategoryRequest categoryRequest){
         return categoryService.create(categoryRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Borrar category por id")
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id){
         categoryService.delete(id);
     }

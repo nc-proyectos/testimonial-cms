@@ -5,10 +5,12 @@ import com.example.backend.modules.category.models.dtos.TagResponse;
 import com.example.backend.modules.category.services.TagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +31,8 @@ public class TagController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Crear un tag nuevo")
-    TagResponse create(@RequestBody TagRequest tagRequest){
+    @PreAuthorize("hasRole('ADMIN')")
+    TagResponse create(@Valid @RequestBody TagRequest tagRequest){
         return tagService.create(tagRequest);
     }
 
@@ -46,6 +49,7 @@ public class TagController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Borrar tag por id")
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id){
         tagService.delete(id);
     }
